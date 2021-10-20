@@ -1,15 +1,192 @@
 \chapter{Referencial teórico}
 
-REFERENCIAL TEÓRICO, FUNDAMENTAÇÃO TEÓRICA, REVISÃO DE LITERATURA
+Nosso referencial teórico aborda predominantemente três temas. O primeiro deles é uma revisão da estrutura geral e estimação dos parâmetros de um McGLM, baseado nas ideias de \citet{Bonat16}. A segunda parte da revisão de literatura diz respeito ao procedimento dos chamados testes de hipóteses com o foco de tratar do objetivo, notação, componentes, aplicação deste tipo de procedimento no contexto de modelos de regressão e ainda quais os testes mais comuns. Por fim, a última parte do referencial diz respeito a procedimentos específicos baseados em testes de hipóteses para avaliar os parâmetros de um modelo de regressão: as análises de variância e os testes de comparações múltiplas.
 
 %=====================================================
 
 \section{Modelos multivariados de covariância linear generalizada}
 
+Os GLMs, propostos por \citet{Nelder72}, são uma forma de modelagem que lida exclusivamente com uma resposta em que esta resposta pode ser contínua, binária ou até mesmo uma contagem. Tais características tornam essa classe de modelos uma flexível ferramenta de modelagem aplicável a diversos tipos de problemas. Contudo, por mais flexível e discutida na literatura, essa classe apresenta ao menos três importantes restrições: i) um leque restrito de distribuições disponíveis para modelagem, ii) a incapacidade de lidar com observações dependentes e iii) a incapacidade de lidar com múltiplas respostas simultaneamente. 
+
+Com o objetivo de contornar estas restrições, foi proposta por \citet{Bonat16}, uma estrutura geral para análise de dados não gaussianos com múltiplas respostas em que não se faz suposições quanto à independência das observações: os McGLMs. Tais modelos, levam em conta a não normalidade por meio de uma função de variância. Além disso, a estrutura média é modelada por meio de uma função de ligação e um preditor linear. Os parâmetros dos modelos são obtidos por meio de funções de estimação baseadas em suposições de segundo momento.
+
+Vamos discutir os McGLMs como uma extensão dos GLMs tal como apresentado em de \citet{Bonat16}. Vale ressaltar que é usada uma especificação menos usual de um GLM, porém trata-se de uma notação mais conveniente para chegar à uma especificação mais simples de um McGLM.
+
 \subsection{Modelo linear generalizado}
+
+Para definição da extensão de um GLM apresentada por \citet{Bonat16}, considere $\boldsymbol{Y}$ um vetor $N \times 1$ de valores observados da variável resposta, $\boldsymbol{X}$ uma matriz de delineamento $N \times k$ e $\boldsymbol{\beta}$ um vetor de parâmetros de regressão $k \times 1$. Com isso, um GLM pode ser escrito da seguinte forma 
+
+\begin{equation}
+\label{eq:glm}
+      \begin{aligned}
+        \mathrm{E}(\boldsymbol{Y}) &=
+         \boldsymbol{\mu} =
+            g^{-1}(\boldsymbol{X} \boldsymbol{\beta}),
+            \\
+        \mathrm{Var}(\boldsymbol{Y}) &=
+          \Sigma =
+          \mathrm{V}\left(\boldsymbol{\mu}; p\right)^{1/2}\left(\tau_0\boldsymbol{I}\right)\mathrm{V}\left(\boldsymbol{\mu}; p\right)^{1/2},
+      \end{aligned}
+\end{equation}
+
+\noindent em que $g(.)$ é a função de ligação, $\mathrm{V}\left(\boldsymbol{\mu}; p\right)$ é uma matriz diagonal em que as entradas principais são dadas pela função de variância aplicada ao vetor $\boldsymbol{\mu}$, $p$ é o parâmetro de potência, $\tau_0$ o parâmetro de dispersão e $\boldsymbol{I}$ é a matriz identidade de ordem $N\times N$.
+
+Nesta extensão, os GLMs fazem uso de apenas duas funções, a função de variância e de ligação. Diferentes escolhas de funções de variância implicam em diferentes suposições a respeito da distribuição da variável resposta. Dentre as funções de variância conhecidas, podemos citar:
+
+1. A função de variância potência, que caracteriza a família Tweedie de distribuições, em que a função de variância é dada por $\vartheta\left(\boldsymbol{\mu}; p\right) = \mu^p$, na qual destacam-se as distribuições: normal ($p$ = 0), Poisson ($p$ = 1), gama ($p$ = 2) e  normal inversa ($p$ = 3). Para mais informações consulte \citet{Jorgensen87} e \citet{Jorgensen97}.
+
+2. A função de dispersão Poisson–Tweedie, a qual caracteriza a família Poisson-Tweedie de distribuições, que visa contornar a inflexibilidade da utilização da função de variância potência para  respostas discretas. A família Poisson-Tweedie tem função de dispersão dada por $\vartheta\left(\boldsymbol{\mu}; p\right) = \mu + \tau\mu^p$, em que $\tau$ é o parâmetro de dispersão. A função de dispersão Poisson-Tweedie tem como casos particulares os mais famosos modelos para dados de contagem: Hermite ($p$ = 0), Neyman tipo A ($p$ = 1), binomial negativa ($p$ = 2) e Poisson–inversa gaussiana (p = $3$) \citep{Jorgensen15}. Não se trata de uma função de variância usual, mas é uma função que caracteriza o relacionamento entre média e variância.
+
+3. A função de variância binomial, dada por $\vartheta(\boldsymbol{\mu}) = \mu(1 - \mu)$, utilizada quando a variável resposta é binária, restrita a um intervalo ou quando tem-se o  número de sucessos em um número de tentativas.
+
+Lembre-se que o GLM é uma classe de modelos de regressão univariados em que um dos pressupostos é a independência entre as observações. Esta independência é especificada na matriz identidade $\boldsymbol{I}$ no centro \autoref{eq:glm}. Podemos imaginar que, substituindo esta matriz identidade por uma matriz qualquer que reflita a relação entre os indivíduos da amostra teremos uma extensão do Modelo Linear Generalizado para observações dependentes. É justamente essa a ideia dos modelos de covariância linear generalizada, o cGLM, também apresentados em \citet{Bonat16}.
+
 \subsection{Modelo de covariância linear generalizada}
+
+Os cGLMs são uma alternativa para problemas em que a suposição de independência entre as observações não é atendida. Neste caso, a solução proposta é substituir a matriz identidade $\boldsymbol{I}$ da \autoref{eq:glm} por uma matriz não diagonal $\boldsymbol{\Omega({\tau})}$ que descreva adequadamente a estrutura de correlação entre as observações. Trata-se de uma ideia similar à proposta de \citet{Liang86} nos modelos GEE (Equações de Estimação Generalizadas), em que utiliza-se uma matriz de correlação de trabalho para considerar a dependência entre as observações. A matriz $\boldsymbol{\Omega({\tau})}$ é descrita como uma combinação de matrizes conhecidas tal como nas propostas de \citet{Anderson73} e \citet{Pourahmadi00}, podendo ser escrita da forma
+
+\begin{equation}
+\label{eq:cov}
+h\left \{ \boldsymbol{\Omega}(\boldsymbol{\tau}) \right \} = \tau_0Z_0 + \ldots + \tau_DZ_D,
+\end{equation}
+
+\noindent em que $h(.)$ é a função de ligação de covariância, $Z_d$ com $d$ = 0,$\ldots$, $D$ são matrizes que representam a estrutura de covariância presente nos dados e $\boldsymbol{\tau}$ = $(\tau_0, \ldots, \tau_D)$ é um vetor $(D + 1) \times 1$ de parâmetros de dispersão. Note que o número de matrizes usadas para especificar o preditor linear matricial, definido por $D$, é indefinido, ou seja, podem ser usadas quantas matrizes forem necessárias para especificação no modelo da relação entre os indivíduos no conjunto de dados. Cada uma das matrizes é associada a um parâmetro de dispersão e podemos utilizar estes parâmetros para avaliar a existência de efeito da correlação entre indivíduos do conjunto de dados. Tal estrutura pode ser vista como um análogo ao preditor linear para a média e foi nomeado como preditor linear matricial, a especificação da função de ligação de covariância é discutida por \citet{Pinheiro96}. É possível selecionar combinações de matrizes para se obter os mais conhecidos modelos da literatura para dados longitudinais, séries temporais, dados espaciais e espaço-temporais. Mais detalhes são discutidos por \citet{Demidenko13}.
+
+Com isso, substituindo a matriz identidade da \autoref{eq:glm} pela \autoref{eq:cov}, temos uma classe com toda a flexibilidade dos GLMs, porém contornando a restrição da independência entre as observações desde que o preditor linear matricial seja adequadamente especificado. Deste modo, é contornada a restrição da incapacidade de lidar com observações dependentes. Outra restrição diz respeito às múltiplas respostas e, contornando este problema, chegamos ao McGLM.
+
 \subsection{Modelos multivariados de covariância linear generalizada}
+
+Os McGLMs podem ser entendidos como uma extensão multivariada dos cGLMs e que portanto contornam as principais restrições presentes nos GLMs. Para definição de um McGLM, considre $\boldsymbol{Y}_{N \times
+R} = \left \{ \boldsymbol{Y}_1, \dots, \boldsymbol{Y}_R \right \}$ uma  matriz de variáveis resposta e $\boldsymbol{M}_{N \times R} = \left \{ \boldsymbol{\mu}_1, \dots, \boldsymbol{\mu}_R \right \}$ uma matriz de valores esperados. Cada uma das variáveis resposta tem sua própria matriz de variância e covariância, responsável por modelar a covariância dentro de cada resposta, sendo expressa por
+
+\begin{equation}
+\Sigma_r =
+\mathrm{V}_r\left(\boldsymbol{\mu}_r; p\right)^{1/2}\boldsymbol{\Omega}_r\left(\boldsymbol{\tau}\right)\mathrm{V}_r\left(\boldsymbol{\mu}_r; p\right)^{1/2}.
+\end{equation}
+
+Além disso, é necessária uma matriz de correlação $\Sigma_b$, de ordem $R \times R$, que descreve a correlação entre as variáveis resposta. Para a especificação da matriz de variância e covariância conjunta é utilizado o produto Kronecker generalizado, proposto por \citet{martinez13}.
+
+Finalmente, um McGLM é descrito como
+
+\begin{equation}
+\label{eq:mcglm}
+      \begin{aligned}
+        \mathrm{E}(\boldsymbol{Y}) &=
+          \boldsymbol{M} =
+            \{g_1^{-1}(\boldsymbol{X}_1 \boldsymbol{\beta}_1),
+            \ldots,
+            g_R^{-1}(\boldsymbol{X}_R \boldsymbol{\beta}_R)\}
+          \\
+        \mathrm{Var}(\boldsymbol{Y}) &=
+          \boldsymbol{C} =
+            \boldsymbol{\Sigma}_R \overset{G} \otimes
+            \boldsymbol{\Sigma}_b,
+      \end{aligned}
+\end{equation}
+
+\noindent em que $\boldsymbol{\Sigma}_R \overset{G} \otimes \boldsymbol{\Sigma}_b = \mathrm{Bdiag}(\tilde{\boldsymbol{\Sigma}}_1, \ldots, \tilde{\boldsymbol{\Sigma}}_R) (\boldsymbol{\Sigma}_b \otimes \boldsymbol{I}) \mathrm{Bdiag}(\tilde{\boldsymbol{\Sigma}}_1^\top, \ldots, \tilde{\boldsymbol{\Sigma}}_R^\top)$ é o produto generalizado de Kronecker, a matriz $\tilde{\boldsymbol{\Sigma}}_r$ denota a matriz triangular inferior da decomposição de Cholesky da matriz ${\boldsymbol{\Sigma}}_r$, o operador $\mathrm{Bdiag}$ denota a matriz bloco-diagonal e $\boldsymbol{I}$ uma matriz identidade $N \times N$. 
+
+Com isso, chega-se a uma classe de modelos com um leque maior de distribuições disponíveis, graças às funções de variância. Além disso, se torna possível a modelagem de dados com estrutura de covariância, por meio da especificação do preditor matricial. E ainda é possível a modelagem de múltiplas respostas. Vale ressaltar que os McGLMs são flexíveis ao ponto de que podemos considerar $R$ preditores lineares diferentes, com $R$ funções de ligação diferentes e $R$ funções de variância diferentes. Esta flexibilidade torna os McGLMs uma classe muito atrativa para aplicação, contudo, dependendo da estrutura e complexidade do problema, existe a possibilidade de ajustar modelos superparametrizados, ou seja, chegar a um cenário com mais parâmetros do que observações. 
+
 \subsection{Estimação e inferência}
+
+Os McGLMs são ajustados baseados no método de funções de estimação descritos em detalhes por \citet{Bonat16} e \citet{jorg04}. Nesta seção é apresentada uma visão geral do algoritmo e da distribuição assintótica dos estimadores baseados em funções de estimação.
+
+As suposições de segundo momento dos McGLMs permitem a divisão dos
+parâmetros em dois conjuntos: $\boldsymbol{\theta} = (\boldsymbol{\beta}^{\top}, \boldsymbol{\lambda}^{\top})^{\top}$. Desta forma, $\boldsymbol{\beta} = (\boldsymbol{\beta}_1^\top, \ldots, \boldsymbol{\beta}_R^\top)^\top$ é um vetor $K \times 1$ de parâmetros de regressão e $\boldsymbol{\lambda} = (\rho_1, \ldots, \rho_{R(R-1)/2}, p_1, \ldots, p_R, \boldsymbol{\tau}_1^\top, \ldots, \boldsymbol{\tau}_R^\top)^\top$ é um vetor $Q \times 1$ de parâmetros de dispersão. Além disso, $\mathcal{Y} = (\boldsymbol{Y}_1^\top, \ldots, \boldsymbol{Y}_R^\top)^\top$ denota o vetor empilhado de ordem $NR \times 1$ da matriz de variáveis resposta $\boldsymbol{Y}_{N \times R}$ e $\mathcal{M} = (\boldsymbol{\mu}_1^\top, \ldots, \boldsymbol{\mu}_R^\top)^\top$ denota o vetor empilhado de ordem $NR \times 1$ da matriz de valores esperados $\boldsymbol{M}_{N \times R}$.
+
+Para estimação dos parâmetros de regressão é utilizada a função quasi-score \citep{Liang86}, representada por
+\begin{equation}
+\label{eq:qs}
+      \begin{aligned}
+        \psi_{\boldsymbol{\beta}}(\boldsymbol{\beta},
+          \boldsymbol{\lambda}) = \boldsymbol{D}^\top
+            \boldsymbol{C}^{-1}(\mathcal{Y} - \mathcal{M}),
+\end{aligned}
+\end{equation}
+\noindent em que $\boldsymbol{D} = \nabla_{\boldsymbol{\beta}} \mathcal{M}$ 
+é uma matriz $NR \times K$, e $\nabla_{\boldsymbol{\beta}}$ denota o 
+operador gradiente. Utilizando a função quasi-score a matriz $K \times K$
+de sensitividade de $\psi_{\boldsymbol{\beta}}$ é dada por
+\begin{equation}
+\begin{aligned}
+S_{\boldsymbol{\beta}} = E(\nabla_{\boldsymbol{\beta} \psi \boldsymbol{\beta}}) = -\boldsymbol{D}^{\top} \boldsymbol{C}^{-1} \boldsymbol{D},
+\end{aligned}
+\end{equation}
+\noindent enquanto que a matriz $K \times K$ de variabilidade de $\psi_{\boldsymbol{\beta}}$ é escrita como
+\begin{equation}
+\begin{aligned}
+V_{\boldsymbol{\beta}} = VAR(\psi \boldsymbol{\beta}) = \boldsymbol{D}^{\top} \boldsymbol{C}^{-1} \boldsymbol{D}.
+\end{aligned}
+\end{equation}
+
+Para os parâmetros de dispersão é utilizada a função de estimação de
+Pearson, definida da forma
+    \begin{equation}
+    \label{eq:pearson}
+      \begin{aligned}
+        \psi_{\boldsymbol{\lambda}_i}(\boldsymbol{\beta},
+        \boldsymbol{\lambda}) =
+        \mathrm{tr}(W_{\boldsymbol{\lambda}i}
+          (\boldsymbol{r}^\top\boldsymbol{r} -
+          \boldsymbol{C})), \: \: i = 1,.., Q, 
+    \end{aligned}
+\end{equation}
+\noindent em que $W_{\boldsymbol{\lambda}i} = -\frac{\partial
+    \boldsymbol{C}^{-1}}{\partial \boldsymbol{\lambda}_i}$ e
+    $\boldsymbol{r} = (\mathcal{Y} - \mathcal{M})$. A entrada $(i,j)$ da matriz de sensitividade $Q \times Q$ de $\psi_{\boldsymbol{\lambda}}$ é
+dada por
+\begin{equation}
+      \begin{aligned}
+S_{\boldsymbol{\lambda_{ij}}} = E \left (\frac{\partial }{\partial \boldsymbol{\lambda_{i}}} \psi \boldsymbol{\lambda_{j}}\right) = -tr(W_{\boldsymbol{\lambda_{i}}} CW_{\boldsymbol{\lambda_{J}}} C).
+    \end{aligned}
+\end{equation}
+\noindent Já a entrada $(i,j)$ da matriz de variabilidade $Q \times Q$ de $\psi_{\boldsymbol{\lambda}}$ é definida por
+\begin{equation}
+      \begin{aligned}
+V_{\boldsymbol{\lambda_{ij}}} = Cov\left ( \psi_{\boldsymbol{\lambda_{i}}}, \psi_{\boldsymbol{\lambda_{j}}} \right) = 2tr(W_{\boldsymbol{\lambda_{i}}} CW_{\boldsymbol{\lambda_{J}}} C) + \sum_{l=1}^{NR} k_{l}^{(4)} (W_{\boldsymbol{\lambda_{i}}})_{ll} (W_{\boldsymbol{\lambda_{j}}})_{ll},
+    \end{aligned}
+\end{equation}
+\noindent em que $k_{l}^{(4)}$ denota a quarta cumulante de $\mathcal{Y}_{l}$. No processo de estimação dos McGLMs é usada sua versão empírica.
+
+Para se levar em conta a covariância entre os vetores $\boldsymbol{\beta}$
+e $\boldsymbol{\lambda}$, \citet{Bonat16} obtiveram as matrizes de 
+sensitividade e variabilidade cruzadas, denotadas por $S_{\boldsymbol{\lambda \beta}}$, $S_{\boldsymbol{\beta \lambda}}$ e $V_{\boldsymbol{\lambda \beta}}$, mais detalhes em \citet{Bonat16}. As matrizes de sensitividade e variabilidade conjuntas de $\psi_{\boldsymbol{\beta}}$ e $\psi_{\boldsymbol{\lambda}}$ são denotados por
+
+\begin{equation}
+      \begin{aligned}
+S_{\boldsymbol{\theta}} = \begin{bmatrix}
+S_{\boldsymbol{\beta}} & S_{\boldsymbol{\beta\lambda}} \\ 
+S_{\boldsymbol{\lambda\beta}} & S_{\boldsymbol{\lambda}} 
+\end{bmatrix} \text{e } V_{\boldsymbol{\theta}} = \begin{bmatrix}
+V_{\boldsymbol{\beta}} & V^{\top}_{\boldsymbol{\lambda\beta}} \\ 
+V_{\boldsymbol{\lambda\beta}} & V_{\boldsymbol{\lambda}} 
+\end{bmatrix}.
+\end{aligned}
+\end{equation}
+
+Seja $\boldsymbol{\hat{\theta}} = (\boldsymbol{\hat{\beta}^{\top}}, \boldsymbol{\hat{\lambda}^{\top}})^{\top}$ o estimador baseado na \autoref{eq:qs} e \autoref{eq:pearson}, a distribuição assintótica de $\boldsymbol{\hat{\theta}}$ é
+
+\begin{equation}
+\begin{aligned}
+\boldsymbol{\hat{\theta}} \sim N(\boldsymbol{\theta}, J_{\boldsymbol{\theta}}^{-1}),
+\end{aligned}
+\end{equation}
+\noindent em que $J_{\boldsymbol{\theta}}^{-1}$ é a inversa da matriz de informação de Godambe, dada por
+$J_{\boldsymbol{\theta}}^{-1} = S_{\boldsymbol{\theta}}^{-1} V_{\boldsymbol{\theta}} S_{\boldsymbol{\theta}}^{-\top}$, em que $S_{\boldsymbol{\theta}}^{-\top} = (S_{\boldsymbol{\theta}}^{-1})^{\top}.$
+
+Para resolver o sistema de equações $\psi_{\boldsymbol{\beta}} = 0$ e $\psi_{\boldsymbol{\lambda}} = 0$ faz-se uso do algoritmo Chaser modificado, proposto por \citet{jorg04}, que fica definido como
+
+\begin{equation}
+\begin{aligned}
+\begin{matrix}
+\boldsymbol{\beta}^{(i+1)} = \boldsymbol{\beta}^{(i)}- S_{\boldsymbol{\beta}}^{-1} \psi \boldsymbol{\beta} (\boldsymbol{\beta}^{(i)}, \boldsymbol{\lambda}^{(i)}), \\ 
+\boldsymbol{\lambda}^{(i+1)} = \boldsymbol{\lambda}^{(i)}\alpha S_{\boldsymbol{\lambda}}^{-1} \psi \boldsymbol{\lambda} (\boldsymbol{\beta}^{(i+1)}, \boldsymbol{\lambda}^{(i)}).
+\end{matrix}
+\end{aligned}
+\end{equation}
+
+Toda metodologia do McGLM está implementada no pacote \emph{mcglm} \citep{mcglm} do software estatístico R \citep{softwareR}.
 
 %=====================================================
 
@@ -17,9 +194,30 @@ REFERENCIAL TEÓRICO, FUNDAMENTAÇÃO TEÓRICA, REVISÃO DE LITERATURA
 \subsection{Elementos de um teste de hipóteses}
 \subsection{Testes de hipóteses em modelos de regressão}
 \subsection{ANOVA e MANOVA}
+\subsection{Testes de comparações múltiplas}
 
 %=====================================================
 
-\section{Testes de comparações múltiplas}
+\textbf{TODO}
 
-%=====================================================
+\begin{itemize}
+  
+  \item \textbf{ESPECIFICAÇÃO DO MODELO E FUNÇÕES DE VARIÂNCIA DIFEREM ENTRE OS ARTIGOS DO JRSS E JSS, QUAL USAR?}
+  
+  \item \textbf{O DANIEL ACHOU QUE A EXPLICAÇÃO SOBRE A SIGMA B NÃO ESTÁ CLARA. MAS NO ARTIGO DO MCGLM NO JRSS SO TEM ISSO "We introduce the R×R correlation matrix sigma b to model the correlation between response variables". O QUE ACRESCENTAR?}
+  
+  \item \textbf{REVISAR SEÇÃO DE ESTIMAÇÃO E INFERÊNCIA E CONFERIR QUAL REFERÊNCIA SEGUIR (JRSS OU JSS)}
+  
+  \item
+  
+  \item
+  
+\end{itemize}
+
+
+
+
+
+
+
+
