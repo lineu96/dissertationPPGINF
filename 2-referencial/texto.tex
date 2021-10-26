@@ -1,6 +1,6 @@
 \chapter{Referencial teórico}
 
-Nosso referencial teórico aborda predominantemente três temas. O primeiro deles é uma revisão da estrutura geral e estimação dos parâmetros de um McGLM, baseado nas ideias de \citet{Bonat16}. A segunda parte do referencial diz respeito ao procedimento dos chamados testes de hipóteses com o foco de tratar do objetivo, notação, componentes, aplicação deste tipo de procedimento no contexto de modelos de regressão e ainda quais os testes mais comuns. Por fim, a última parte do referencial diz respeito a procedimentos específicos baseados em testes de hipóteses para avaliar os parâmetros de um modelo de regressão: as análises de variância e os testes de comparações múltiplas.
+Nosso referencial teórico aborda predominantemente três temas. O primeiro deles é uma revisão da estrutura geral e estimação dos parâmetros de um McGLM, baseado nas ideias de \citet{Bonat16}. A segunda parte do referencial diz respeito ao procedimento dos chamados testes de hipóteses com o foco de tratar do objetivo, notação, componentes e aplicação deste tipo de procedimento no contexto de modelos de regressão. Por fim, a última parte do referencial diz respeito a procedimentos específicos baseados em testes de hipóteses para avaliar os parâmetros de um modelo de regressão: as análises de variância e os testes de comparações múltiplas.
 
 %=====================================================
 
@@ -269,21 +269,21 @@ distribuição.
 
 \subsection{Testes de hipóteses em modelos de regressão}
 
-Em modelos de regressão modela-se uma variável em função de um conjunto de variáveis explicativas. Estes modelos contêm parâmetros que são quantidades desconhecidas que estabelecem a relação entre as variáveis sob o modelo. Basicamente, o parâmetro de interesse da distribuição de probabilidades utilizada é reescrito como uma combinação linear de novos parâmetros associados a vetores numéricos que contém o valor de variáveis explicativas.
+A ideia de modelos de regressão consiste em modelar uma variável em função de um conjunto de variáveis explicativas. Estes modelos contêm parâmetros que são quantidades desconhecidas que estabelecem a relação entre as variáveis sob o modelo. Basicamente, o parâmetro de interesse da distribuição de probabilidades utilizada é reescrito como uma combinação linear de novos parâmetros associados a vetores numéricos que contém o valor de variáveis explicativas.
 
 Os parâmetros desta combinação linear são estimados com base nos dados e, como estão associados a variáveis explicativas, pode ser de interesse verificar se a retirada de uma ou mais variáveis do modelo gera um modelo significativamente pior que o original. Em outros termos, uma hipótese de interesse costuma ser verificar se há evidência suficiente nos dados para afirmar que determinada variável explicativa não possui efeito sobre a resposta.
 
-Neste contexto, testes de hipóteses são amplamente empregados, sendo que, quando se trata de modelos de regressão, três testes são usualmente utilizados: o teste da razão de verossimilhanças, o teste Wald e o teste multiplicador de lagrange, também conhecido como teste escore. \citet{engle} descreve a formulação geral dos três testes. Dedicaremos parte deste referencial ao teste Wald.
+Neste contexto, testes de hipóteses são amplamente empregados, sendo que, quando se trata de modelos de regressão, três testes são usualmente utilizados: o teste da razão de verossimilhanças, o teste Wald e o teste multiplicador de lagrange, também conhecido como teste escore. Estes testes são assintóticamente equivalentes; em amostras finitas podem apresentar resultados diferentes de tal modo que a estatística do teste Wald é maior que a estatística do teste da razão de verossimilhanças que, por sua vez, é maior que a estatística do teste escore \citep{conflict}. \citet{engle} descreve a formulação geral dos três testes. Dedicaremos parte deste referencial ao teste Wald.
 
 \subsubsection{Teste Wald}
 
 O teste Wald \citep{wald} avalia a distância entre as estimativas dos parâmetros e um conjunto de valores postulados. Esta diferença é ainda padronizada por medidas de precisão das estimativas dos parâmetros. Quanto mais distante de 0 for o valor da distância padronizada, menores são as evidências a favor da hipótese de que os valores estimados são iguais aos valores postulados.
 
-Com isso, a ideia do teste consiste em verificar se existe evidência suficiente nos dados para afirmar que um ou mais parâmetros são iguais a valores especificados. Em geral, os valores especificados são um vetor nulo para verificar se há evidência para afirmar que os valores dos parâmetros são iguais a 0, contudo existe a possibilidade de especificar hipóteses para qualquer valor e, em certos casos, isto é bastante útil.
+Com isso, a ideia do teste consiste em verificar se existe evidência suficiente nos dados para afirmar que um ou mais parâmetros são iguais a valores especificados. Em geral, os valores especificados são um vetor nulo para verificar se há evidência para afirmar que os valores dos parâmetros são iguais a 0, contudo existe a possibilidade de especificar hipóteses para qualquer valor.
 
 Para definição de um teste Wald, considere um único modelo de regressão ajustado em que os parâmetros foram estimados por meio da maximização da função de verossimilhança. Neste contexto, considere $\boldsymbol{\beta}$ o vetor de parâmetros de regressão $k \times 1$ deste modelo, em que as estimativas são dadas por $\boldsymbol{\hat\beta}$.
 
-Considere que há interesse em testar $r$ restrições ao modelo original, isto é, há interesse em avaliar $r$ dos $k$ parâmetros originais. As hipóteses são especificadas por meio de uma matriz $\boldsymbol{L}$ de dimensão $r \times k$ e um vetor $\boldsymbol{c}$ de valores postulados, de dimensão $r$. Com base nestes elementos, as hipóteses podem ser descritas como:
+Considere que há interesse em testar $r$ restrições ao modelo original, isto é, há interesse em avaliar $r$ dos $k$. As hipóteses são especificadas por meio de uma matriz $\boldsymbol{L}$ de dimensão $r \times k$ e um vetor $\boldsymbol{c}$ de valores postulados, de dimensão $r$. Com base nestes elementos, as hipóteses podem ser descritas como:
 
 $$
 H_0: \boldsymbol{L}\boldsymbol{\beta} = \boldsymbol{c} \: \:  vs \: \:  H_1: \boldsymbol{L}\boldsymbol{\beta} \neq \boldsymbol{c},
@@ -301,11 +301,11 @@ $$
 
 Quando trabalhamos com modelos univariados, uma das formas de avaliar a significância de cada uma das variáveis de uma forma procedural é por meio da análise de variância (ANOVA) \citep{anova_fisher}. Este método consiste em efetuar testes de hipóteses sucessivos impondo restrições ao modelo original. O objetivo é testar se a ausência de determinada variável gera um modelo significativamente inferior que o modelo com determinada variável. Os resultados destes sucessivos testes são sumarizados numa tabela: o chamado quadro de análise de variância. Em geral, este quadro contém em cada linha: a variável, o valor de uma estatística de teste referente à hipótese de nulidade de todos os parâmetros associados à esta variável, os graus de liberdade desta hipótese, e um valor-p associado à hipótese testada naquela linha do quadro.
 
-Trata-se de um interessante procedimento para avaliar a relevância de uma variável ao problema, contudo, cuidados devem ser tomados no que diz respeito à forma como o quadro foi elaborado. Como já mencionado, cada linha do quadro refere-se a uma hipótese e estas hipóteses podem ser formuladas de formas distintas. Formas conhecidas de se elaborar o quadro são as chamadas ANOVAs do tipo I, II e III. Esta nomenclatura vem do software estatístico SAS \citep{sas}, contudo as implementações existentes em outros softwares que seguem esta nomenclatura não necessariamente correspondem ao que está implementado no SAS. No software R \citep{softwareR} as implementações dos diferentes tipos de análise de variância podem ser obtidas e usadas no pacote \emph{car} \citep{car}.
+Trata-se de um interessante procedimento para avaliar a relevância de uma variável ao problema, contudo, cuidados devem ser tomados no que diz respeito à forma como o quadro foi elaborado. Como já mencionado, cada linha do quadro refere-se a uma hipótese e estas hipóteses podem ser formuladas de formas distintas. Formas conhecidas de se elaborar o quadro são as chamadas ANOVAs dos tipos I, II e III. Esta nomenclatura vem do software estatístico SAS \citep{sas}, contudo as implementações existentes em outros softwares que seguem esta nomenclatura não necessariamente correspondem ao que está implementado no SAS. No software R \citep{softwareR} as implementações dos diferentes tipos de análise de variância podem ser obtidas e usadas no pacote \emph{car} \citep{car}. Geralmente, no contexto de modelos de regressão, para gerar quadros de análise de variância, faz-se uso de uma sequência de testes da razão de verossimilhanças para avaliar o efeito de cada variável explicativa do modelo. 
 
-Geralmente, no contexto de modelos de regressão, para gerar o quadro de análise de variância, uma sequência de testes de testes da razão de verossimilhanças são realizados para avaliar o efeito de cada variável explicativa do modelo. Contudo é possível gerar quadros de análise de variância por meio do teste Wald. 
+Do mesmo modo que é feito para um modelo univariado, podemos chegar também a uma análise de variância multivariada (MANOVA) realizando sucessivos testes de hipóteses nos quais existe o interesse em avaliar o efeito de determinada variável em todas as respostas simultaneamente. A MANOVA clássica \citep{manova} é um assunto com vasta discussão na literatura e possui diversas propostas com o objetivo de verificar o efeito de variáveis explicativas sobre múltiplas respostas, como o $\lambda$ de Wilk's \citep{wilks}, traço de Hotelling-Lawley \citep{lawley}; \citep{hotelling}, traço de Pillai \citep{pillai} e maior raiz de Roy \citep{roy}. 
 
-Do mesmo modo que é feito para um modelo univariado, podemos chegar também a uma análise de variância multivariada (MANOVA) realizando sucessivos testes de hipóteses nos quais existe o interesse em avaliar o efeito de determinada variável em todas as respostas simultaneamente. Portanto, a pergunta a ser respondida seria: esta variável tem efeito diferente de 0 para todas as respostas? A MANOVA clássica \citep{manova} é um assunto com vasta discussão na literatura e possui diversas propostas com o objetivo de verificar a nulidade dos parâmetros de um modelo de regressão multivariado, como o $\lambda$ de Wilk's \citep{wilks}, traço de Hotelling-Lawley \citep{lawley}; \citep{hotelling}, traço de Pillai \citep{pillai} e maior raiz de Roy \citep{roy}. Tal como no caso univariado basta, para cada linha do quadro de análise de variância, especificar corretamente uma matriz $\boldsymbol{L}$ que represente de forma adequada a hipótese a ser testada.
+É possível gerar quadros de análise de variância por meio do teste Wald. Basta, para cada linha do quadro de análise de variância, especificar corretamente uma matriz $\boldsymbol{L}$ que represente de forma adequada a hipótese a ser testada.
 
 \subsection{Testes de comparações múltiplas}
 
@@ -315,7 +315,9 @@ Do mesmo modo que é feito para um modelo univariado, podemos chegar também a u
 
 %=====================================================
 
-\vspace{10cm}
+\newpage
+
+\textbf{TODO}
 
 \begin{itemize}
   
@@ -323,10 +325,16 @@ Do mesmo modo que é feito para um modelo univariado, podemos chegar também a u
   
   \item \textbf{O DANIEL ACHOU QUE A EXPLICAÇÃO SOBRE A SIGMA B NÃO ESTÁ CLARA. MAS NO ARTIGO DO MCGLM NO JRSS SO TEM ISSO "We introduce the R×R correlation matrix sigma b to model the correlation between response variables". O QUE ACRESCENTAR?}
   
-  \item \textbf{MAIS DE UMA PESSOA DISSE QUE NÃO FICOU BOM MENCIONAR TRV E LMT SEM USARMOS, DEIXEI APENAS NA INTRODUÇÃO A EXPLICAÇÃO GENÉRICA DELES E OPTEI POR TIRAR DO REFERENCIAL}
+  \item \textbf{MAIS DE UMA PESSOA DISSE QUE NÃO FICOU BOM MENCIONAR TRV E LMT SEM USARMOS, DEIXEI APENAS NA INTRODUÇÃO A EXPLICAÇÃO GENÉRICA DELES, REFERENCIEI NO REFERENCIAL E OPTEI POR TIRAR A EXPLICAÇÃO}
   
   \item \textbf{Let L be a design vector or a design matrix of known weights for selected components in beta and be a combination of interest.}
+
+  \item \textbf{UMA IMAGEM COM OS ELEMENTOS DE UM TESTE DE HIPÓTESES CAIRIA BEM}
   
   \item \textbf{O TEXTO DE ANOVA PASSOU PELA QUALI SEM CRÍTICAS, MAS SINTO QUE ESTÁ FRACO}
   
+  \item \textbf{UMA IMAGEM COM OS ELEMENTOS DE UM QUADRO DE ANOVA CAIRIA BEM}
+  
+  \item \textbf{ESCREVER A PARTE DE COMPARAÇÕES MÚLTIPLAS}
+    
 \end{itemize}
