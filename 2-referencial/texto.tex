@@ -309,13 +309,63 @@ Do mesmo modo que é feito para um modelo univariado, podemos chegar também a u
 
 \subsection{Testes de comparações múltiplas}
 
+Quando a ANOVA aponta para efeito significativo de uma variável categórica, costuma ser de interesse do pesquisador avaliar quais dos níveis diferem entre si. Para isso são empregados os testes de comparações múltiplas. Na literatura existem diversos procedimentos para efetuar tais testes, muitos deles descritos em \citet{hsu1996multiple}.
+
+No contexto de modelos de regressão costuma ser de interesse avaliar comparações aos pares a fim de detectar para quais níveis da variável categórica os valores da resposta se alteram. Tal tipo de situação pode ser avaliada utilizando o teste Wald. Através da correta especificação da matriz $\boldsymbol{L}$, é possível avaliar hipóteses sobre qualquer possível contraste entre os níveis de uma determinada variável categórica. Portanto, é possível usar a estatística de Wald para efetuar também testes de comparações múltiplas.
+
+O procedimento consiste basicamente de 3 passos. O primeiro deles é obter a matriz de combinações lineares dos parâmetros do modelo que resultam nas médias ajustadas. Com esta matriz é possível gerar a matriz de contrastes, dada pela subtração duas a duas das linhas da matriz de combinações lineares. Por fim, basta selecionar as linhas de interesse desta matriz e usá-las como matriz de especificação de hipóteses do teste Wald, no lugar da matriz $\boldsymbol{L}$.
+	
+Por exemplo, suponha que há uma variável resposta $Y$ sujeita a uma variável explicativa $X$ de 4 níveis: A, B, C e D. Para avaliar o efeito da variável $X$, ajustou-se um modelo dado por:
+
+$$g(\mu) = \beta_0 + \beta_1[X=B] + \beta_2[X=C] + \beta_3[X=D].$$
+
+\noindent Nesta parametrização o primeiro nível da variável categórica é mantido como nível de referência e, para os demais níveis, mede-se a mudança para a categoria de referência; este é o chamado constraste de tramento. Neste contexto $\beta_0$ representa a média ajustada do nível A, enquanto que $\beta_1$ representa a diferença de A para B, $\beta_2$ representa a diferença de A para C e $\beta_3$ representa a diferença de A para D. Com esta parametrização é possível obter o valor predito para qualquer uma das categorias de tal modo que se o indivíduo pertencer à categoria A, $\beta_0$ representa o predito; se o indivíduo pertencer à categoria B, $\beta_0 + \beta_1$ representa o predito; para a categoria C, $\beta_0 + \beta_2$ representa o predito e, por fim, para a categoria D, $\beta_0 + \beta_3$ representa o predito.
+
+Matricialmente, estes resultados podem ser descritos como
+
+$$
+    \boldsymbol{K_0} = 
+      \begin{matrix}
+        A\\ 
+        B\\ 
+        C\\ 
+        D 
+      \end{matrix} 
+    \begin{bmatrix}
+      1 & 0 & 0 & 0\\ 
+      1 & 1 & 0 & 0\\ 
+      1 & 0 & 1 & 0\\ 
+      1 & 0 & 0 & 1 
+    \end{bmatrix}
+$$
+
+Note que o produto $\boldsymbol{K_0} \boldsymbol{\beta}$ gera o vetor de preditos para cada nível de $X$. Por meio da subtração das linhas da matriz de combinações lineares $\boldsymbol{K_0}$ podemos gerar uma matriz de contrastes $\boldsymbol{K_1}$
+
+$$
+    \boldsymbol{K_1} = 
+      \begin{matrix}
+        A-B\\ 
+        A-C\\ 
+        A-D\\ 
+        B-C\\
+        B-D\\
+        C-D\\ 
+      \end{matrix} 
+    \begin{bmatrix}
+      0 & -1 &  0 &  0\\ 
+      0 &  0 & -1 &  0\\ 
+      0 &  0 &  0 & -1\\ 
+      0 &  1 & -1 &  0\\ 
+      0 &  1 &  0 & -1\\ 
+      0 &  0 &  1 & -1 
+    \end{bmatrix}
+$$
+
+Para proceder um teste de comparações múltiplas basta selecionar o contraste desejado na linha da matriz $\boldsymbol{K_1}$ e utilizar esta linha como matriz de especificação de hipóteses do teste Wald. Por fim, como usual em testes de comparações múltiplas, é recomendada a correção dos valores-p por meio da correção de Bonferroni.
+
 %=====================================================
 
-\textbf{TODO}
-
-%=====================================================
-
-\newpage
+\vspace{2cm}
 
 \textbf{TODO}
 
@@ -326,15 +376,11 @@ Do mesmo modo que é feito para um modelo univariado, podemos chegar também a u
   \item \textbf{O DANIEL ACHOU QUE A EXPLICAÇÃO SOBRE A SIGMA B NÃO ESTÁ CLARA. MAS NO ARTIGO DO MCGLM NO JRSS SO TEM ISSO "We introduce the R×R correlation matrix sigma b to model the correlation between response variables". O QUE ACRESCENTAR?}
   
   \item \textbf{MAIS DE UMA PESSOA DISSE QUE NÃO FICOU BOM MENCIONAR TRV E LMT SEM USARMOS, DEIXEI APENAS NA INTRODUÇÃO A EXPLICAÇÃO GENÉRICA DELES, REFERENCIEI NO REFERENCIAL E OPTEI POR TIRAR A EXPLICAÇÃO}
-  
-  \item \textbf{Let L be a design vector or a design matrix of known weights for selected components in beta and be a combination of interest.}
 
   \item \textbf{UMA IMAGEM COM OS ELEMENTOS DE UM TESTE DE HIPÓTESES CAIRIA BEM}
   
   \item \textbf{O TEXTO DE ANOVA PASSOU PELA QUALI SEM CRÍTICAS, MAS SINTO QUE ESTÁ FRACO}
   
   \item \textbf{UMA IMAGEM COM OS ELEMENTOS DE UM QUADRO DE ANOVA CAIRIA BEM}
-  
-  \item \textbf{ESCREVER A PARTE DE COMPARAÇÕES MÚLTIPLAS}
     
 \end{itemize}
