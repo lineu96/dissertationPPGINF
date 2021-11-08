@@ -140,7 +140,7 @@ H_0: \beta_{11} - \beta_{21} = 0 \ vs \ H_1: \beta_{11} - \beta_{21} \neq 0,
 
 Como existe apenas uma hipótese, a matriz $\boldsymbol{L}$ possui apenas uma linha. Para a matriz $\boldsymbol{L}$ ser corretamente especificada no caso de uma hipótese de igualdade é necessário colocar 1 na coluna referente a um parâmetro, e -1 na coluna referente ao outro parâmetro, de tal modo que o produto $\boldsymbol{L}\boldsymbol{\theta^{*}}$ represente a hipótese de interesse inicialmente postulada, neste caso o produto $\boldsymbol{L}\boldsymbol{\theta^{*}}$ gera exatamente a mesma hipótese especificada na \autoref{eq:ex3} e a distribuição assintótica do teste é $\chi^2_1$.
 
-\subsection{Exemplo 4: hipótese sobre parâmetros de regressão ou dispersão para respostas sob mesmo preditor}
+\subsection{Exemplo 4: hipótese sobre parâmetros de regressão ou dispersão para respostas sob mesmo preditor}\label{sec:sec_ex4}
 
 A \autoref{eq:pred_ex} descreve um modelo bivariado genérico. É importante notar que neste exemplo ambas as respostas estão sujeitas ao mesmo preditor. Na prática, quando se trata dos McGLMs, preditores diferentes podem ser especificados entre variáveis respostas. Deste modo, o que foi exposto na \autoref{sec:ex2} serve para qualquer caso em que haja interesse em testar hipóteses sobre mais de um parâmetro do modelo, sejam eles na mesma resposta ou em respostas diferentes, independente dos preditores entre respostas.
 
@@ -236,7 +236,25 @@ Note que nas linhas em que se testa o efeito de $X_1$ e $X_2$ mantém-se o efeit
 
 \section{Teste de comparações múltiplas via teste Wald}
 
-%=====================================================
+Outra contribuição deste trabalho é a proposta de um procedimento para comparações aos pares a fim de detectar diferenças entre níveis de variáveis explicativas categóricas em McGLMs. Trata-se de uma generalização para os McGLMs do procedimento genérico descrito na \autoref{sec:multcomp} em que utiliza-se o teste Wald para comparação de cada par de níveis de uma variável categórica através da especificação de um conjunto de matrizes $\boldsymbol{L}$ do teste Wald.
+
+O procedimento é idêntico ao descrito na \autoref{sec:multcomp} e consiste em:  
+
+\begin{enumerate}
+
+  \item Obter a matriz de combinações lineares dos parâmetros do modelo que resultam nas médias ajustadas.
+  
+  \item Gerar a matriz de contrastes (subtração duas a duas das linhas da matriz de combinações lineares).
+  
+  \item Selecionar as linhas de interesse desta matriz e usá-las como matriz de especificação de hipóteses do teste Wald, no lugar da matriz $\boldsymbol{L}$.
+  
+  \item Em geral, devido ao grande número de testes feitos, corrigir os valores-p por meio da correção de Bonferroni.
+  
+\end{enumerate}
+
+Para efetuação deste procedimento para os McGLMs devemos lembrar que trata-se de uma classe de modelos multivariados. E tal como ocorre no caso das análises de variância, para os testes comparações múltiplas existem duas possibilidades: testes para uma única resposta e testes para múltiplas respostas. 
+
+Na prática, se o interesse for um teste de comparações múltiplas multivariado, existe a necessidade de todas as respostas estarem sujeitas a um mesmo preditor e basta expandir a matriz de contrastes utilizando o produto Kronecker, seguindo uma ideia muito similar ao exposto na \autoref{sec:sec_ex4}. No caso de um teste de comparações múltiplas para cada resposta, basta selecionar o vetor de estimativas e a partição correspondente ao vetor da matriz $J_{\boldsymbol{\theta}}^{-1}$ para a resposta específica e proceder com o teste. Desta forma é possível chegar a um simples e útil procedimento de comparações múltiplas para quando há um McGLM com variáveis explicativas categóricas e há interesse em determinar quais níveis diferem entre si.
 
 %=====================================================
 
@@ -250,7 +268,7 @@ Note que nas linhas em que se testa o efeito de $X_1$ e $X_2$ mantém-se o efeit
   
   \item \textbf{Como nomear anova e manova no contexto dos mcglm? ANOVA e MANOVA não parecem nomes adequados para o procedimento que estamos propondo para os mcglms. Qual seria o nome adequado? Esta parte é importante para a proposta}
 
-  \item \textbf{Escrever multcomp}
+  \item \textbf{Texto sobre comparações múltiplas está suficiente?}
   
 \end{itemize}
 
