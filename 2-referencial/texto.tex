@@ -57,14 +57,14 @@ Com isso, substituindo a matriz identidade da \autoref{eq:glm} pela \autoref{eq:
 \subsection{Modelos multivariados de covariância linear generalizada}
 
 Os McGLMs podem ser entendidos como uma extensão multivariada dos cGLMs e que portanto contornam as principais restrições presentes nos GLMs. Para definição de um McGLM, considre $\boldsymbol{Y}_{N \times
-R} = \left \{ \boldsymbol{Y}_1, \dots, \boldsymbol{Y}_R \right \}$ uma  matriz de variáveis resposta e $\boldsymbol{M}_{N \times R} = \left \{ \boldsymbol{\mu}_1, \dots, \boldsymbol{\mu}_R \right \}$ uma matriz de valores esperados. Cada uma das variáveis resposta tem sua própria matriz de variância e covariância, responsável por modelar a covariância dentro de cada resposta, sendo expressa por
+R} = \left \{ \boldsymbol{Y}_1, \dots, \boldsymbol{Y}_R \right \}$ uma  matriz de variáveis resposta e $\boldsymbol{M}_{N \times R} = \left \{ \boldsymbol{\mu}_1, \dots, \boldsymbol{\mu}_R \right \}$ uma matriz de valores esperados. Cada uma das variáveis resposta tem sua própria matriz de variância e covariância de dimensão $N \times N$, responsável por modelar a covariância dentro de cada resposta, sendo expressa por
 
 $$
 \Sigma_r =
-\mathrm{V}_r\left(\boldsymbol{\mu}_r; p\right)^{1/2}\boldsymbol{\Omega}_r\left(\boldsymbol{\tau}\right)\mathrm{V}_r\left(\boldsymbol{\mu}_r; p\right)^{1/2}.
+\mathrm{V}\left(\boldsymbol{\mu}_r; p_r\right)^{1/2}\boldsymbol{\Omega}_r\left(\boldsymbol{\tau}\right)\mathrm{V}_r\left(\boldsymbol{\mu}_r; p_r\right)^{1/2}.
 $$
 
-Além disso, é necessária uma matriz de correlação $\Sigma_b$, de ordem $R \times R$, que descreve a correlação entre as variáveis resposta. Para a especificação da matriz de variância e covariância conjunta é utilizado o produto Kronecker generalizado, proposto por \citet{martinez13}.
+Além disso, é necessário estimar uma matriz de correlação $\Sigma_b$, de ordem $R \times R$, que descreve a correlação entre as variáveis resposta. Para a especificação da matriz de variância e covariância conjunta é utilizado o produto Kronecker generalizado, proposto por \citet{martinez13}.
 
 Finalmente, um McGLM é descrito como
 
@@ -380,10 +380,6 @@ Para proceder um teste de comparações múltiplas basta selecionar o contraste 
 \textbf{TODO}
 
 \begin{itemize}
-  
-  \item \textbf{REVISAR REFERENCIAL CONFORME JSS}
-  
-  \item \textbf{ACRESCENTAR QUE OS PARÂMETROS DE SIGMA B SÃO ESTIMADOS JUNTO COM OS DEMAIS PARÂMETROS}
 
   \item \textbf{UMA IMAGEM COM OS ELEMENTOS DE UM TESTE DE HIPÓTESES CAIRIA BEM}
   
